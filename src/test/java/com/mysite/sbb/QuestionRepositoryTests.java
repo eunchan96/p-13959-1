@@ -15,7 +15,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ActiveProfiles("test")
 @SpringBootTest
 @Transactional
-class SbbApplicationTests {
+class QuestionRepositoryTests {
 	@Autowired
 	private QuestionRepository questionRepository;
 
@@ -42,6 +42,7 @@ class SbbApplicationTests {
 	@Test
 	@DisplayName("findBySubject")
 	void t3() {
+		// findBySubject
 		Question q = this.questionRepository.findBySubject("sbb가 무엇인가요?");
 		assertThat(q.getId()).isEqualTo(1);
 
@@ -53,5 +54,35 @@ class SbbApplicationTests {
 		List<Question> qList = this.questionRepository.findBySubjectLike("sbb%");
 		q = qList.get(0);
 		assertThat(q.getSubject()).isEqualTo("sbb가 무엇인가요?");
+	}
+
+	@Test
+	@DisplayName("수정")
+	void t4() {
+		Optional<Question> oq = this.questionRepository.findById(1);
+		if (oq.isPresent()) {
+			Question q = oq.get();
+			q.setSubject("수정된 제목");
+			this.questionRepository.save(q);
+		}
+
+		oq = this.questionRepository.findById(1);
+		if (oq.isPresent()) {
+			Question q = oq.get();
+			assertThat(q.getSubject()).isEqualTo("수정된 제목");
+		}
+	}
+
+	@Test
+	@DisplayName("삭제")
+	void t5() {
+		assertThat(this.questionRepository.count()).isEqualTo(2);
+		Optional<Question> oq = this.questionRepository.findById(1);
+		if (oq.isPresent()) {
+			Question q = oq.get();
+			this.questionRepository.delete(q);
+		}
+
+		assertThat(this.questionRepository.count()).isEqualTo(1);
 	}
 }
