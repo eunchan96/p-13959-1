@@ -93,8 +93,16 @@ class QuestionRepositoryTests {
 		answer.setQuestion(question);
 		answerRepository.save(answer);
 
-//		List<Answer> answerList = answerRepository.findByQuestion(question);
-//		assertThat(answerList.size()).isEqualTo(1);
-//		assertThat(answerList.get(0).getContent()).isEqualTo("네, 자동으로 생성됩니다.");
+		assertThat(question.getAnswers().size()).isEqualTo(1);
+	}
+
+	@Test
+	@DisplayName("답변 저장 ver.2")
+	void t9() {
+		Question question = questionRepository.findById(2).get();
+
+		question.addAnswer("네, 자동으로 생성됩니다.");
+
+		assertThat(question.getAnswers().size()).isEqualTo(1);
 	}
 }
