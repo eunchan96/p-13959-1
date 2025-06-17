@@ -8,7 +8,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -56,38 +55,31 @@ class QuestionRepositoryTests {
 	@Test
 	@DisplayName("findBySubjectLike")
 	void t5() {
-		List<Question> qList = this.questionRepository.findBySubjectLike("sbb%");
-		Question q = qList.get(0);
-		assertThat(q.getSubject()).isEqualTo("sbb가 무엇인가요?");
+		List<Question> questions = questionRepository.findBySubjectLike("sbb%");
+
+		Question question = questions.get(0);
+		assertThat(question.getSubject()).isEqualTo("sbb가 무엇인가요?");
 	}
 
 	@Test
 	@DisplayName("수정")
 	void t6() {
-		Optional<Question> oq = this.questionRepository.findById(1);
-		if (oq.isPresent()) {
-			Question q = oq.get();
-			q.setSubject("수정된 제목");
-			this.questionRepository.save(q);
-		}
+		Question question = questionRepository.findById(1).get();
+		question.setSubject("수정된 제목");
+		questionRepository.save(question);
 
-		oq = this.questionRepository.findById(1);
-		if (oq.isPresent()) {
-			Question q = oq.get();
-			assertThat(q.getSubject()).isEqualTo("수정된 제목");
-		}
+		Question foundedQuestion = questionRepository.findBySubject("수정된 제목").get();
+		assertThat(foundedQuestion).isNotNull();
 	}
 
 	@Test
 	@DisplayName("삭제")
 	void t7() {
-		assertThat(this.questionRepository.count()).isEqualTo(2);
-		Optional<Question> oq = this.questionRepository.findById(1);
-		if (oq.isPresent()) {
-			Question q = oq.get();
-			this.questionRepository.delete(q);
-		}
+		assertThat(questionRepository.count()).isEqualTo(2);
 
-		assertThat(this.questionRepository.count()).isEqualTo(1);
+		Question question = questionRepository.findById(1).get();
+		questionRepository.delete(question);
+
+		assertThat(questionRepository.count()).isEqualTo(1);
 	}
 }
