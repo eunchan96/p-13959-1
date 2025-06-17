@@ -19,46 +19,51 @@ class QuestionRepositoryTests {
 	@Autowired
 	private QuestionRepository questionRepository;
 
+	@Autowired
+	private AnswerRepository answerRepository;
+
 	@Test
 	@DisplayName("findAll")
 	void t1() {
-		List<Question> all = questionRepository.findAll();
-		assertThat(all.size()).isEqualTo(2);
+		List<Question> questions = questionRepository.findAll();
+		assertThat(questions.size()).isEqualTo(2);
 
-		Question q = all.get(0);
-		assertThat(q.getSubject()).isEqualTo("sbb가 무엇인가요?");
+		Question question = questions.get(0);
+		assertThat(question.getSubject()).isEqualTo("sbb가 무엇인가요?");
 	}
 
 	@Test
 	@DisplayName("findById")
 	void t2() {
-		Optional<Question> oq = this.questionRepository.findById(1);
-		if (oq.isPresent()) {
-			Question q = oq.get();
-			assertThat(q.getSubject()).isEqualTo("sbb가 무엇인가요?");
-		}
+		Question question = questionRepository.findById(1).get();
+		assertThat(question.getSubject()).isEqualTo("sbb가 무엇인가요?");
 	}
 
 	@Test
 	@DisplayName("findBySubject")
 	void t3() {
-		// findBySubject
-		Question q = this.questionRepository.findBySubject("sbb가 무엇인가요?");
-		assertThat(q.getId()).isEqualTo(1);
+		Question question = questionRepository.findBySubject("sbb가 무엇인가요?").get();
+		assertThat(question.getId()).isEqualTo(1);
+	}
 
-		// findBySubjectAndContent
-		q = this.questionRepository.findBySubjectAndContent("sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.");
-		assertThat(q.getId()).isEqualTo(1);
+	@Test
+	@DisplayName("findBySubjectAndContent")
+	void t4() {
+		Question question = questionRepository.findBySubjectAndContent("sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.").get();
+		assertThat(question.getId()).isEqualTo(1);
+	}
 
-		// findBySubjectLike
+	@Test
+	@DisplayName("findBySubjectLike")
+	void t5() {
 		List<Question> qList = this.questionRepository.findBySubjectLike("sbb%");
-		q = qList.get(0);
+		Question q = qList.get(0);
 		assertThat(q.getSubject()).isEqualTo("sbb가 무엇인가요?");
 	}
 
 	@Test
 	@DisplayName("수정")
-	void t4() {
+	void t6() {
 		Optional<Question> oq = this.questionRepository.findById(1);
 		if (oq.isPresent()) {
 			Question q = oq.get();
@@ -75,7 +80,7 @@ class QuestionRepositoryTests {
 
 	@Test
 	@DisplayName("삭제")
-	void t5() {
+	void t7() {
 		assertThat(this.questionRepository.count()).isEqualTo(2);
 		Optional<Question> oq = this.questionRepository.findById(1);
 		if (oq.isPresent()) {
