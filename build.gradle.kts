@@ -33,6 +33,8 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	testImplementation("org.assertj:assertj-core:3.27.3")
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+	implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
 }
 
 tasks.withType<Test> {

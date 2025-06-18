@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <title>질문 목록</title>
+    </head>
+    <body>
+        <h1>질문 목록</h1>
+        <ul>
+            <li>1 / 질문 1</li>
+            <li>2 / 질문 2</li>
+        </ul>
+
+        <h1>이름 : [[${name}]]</h1>
+
+        <h1>나이들</h1>
+        <ul>
+            <li th:each="age : ${ages}">[[${age}]]</li>
+        </ul>
+    </body>
+</html>
