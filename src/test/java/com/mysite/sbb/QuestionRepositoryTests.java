@@ -110,4 +110,21 @@ class QuestionRepositoryTests {
 		assertThat(newAnswer.getId()).isEqualTo(0); // INSERT가 트랜잭션 이후에 발생하므로 ID는 0으로 시작
 		assertThat(afterCount).isEqualTo(beforeCount + 1);
 	}
+
+	@Test
+	@DisplayName("답변 조회")
+	void t10() {
+		Answer answer = answerRepository.findById(1).get();
+		assertThat(answer.getId()).isEqualTo(1);
+	}
+
+	@Test
+	@DisplayName("답변 조회 ver.2") // Question에서 답변 조회
+	void t11() {
+		Question question = questionRepository.findById(2).get();
+		List<Answer> answers = question.getAnswers();
+		assertThat(answers.size()).isEqualTo(1);
+
+		assertThat(answers.get(0).getId()).isEqualTo(1);
+	}
 }

@@ -46,6 +46,8 @@ public class testInitData {
         q2.setModifyDate(now());
         this.questionRepository.save(q2);
 
+        q2.addAnswer("네 자동으로 생성됩니다.");
+
         System.out.println("기본 데이터가 초기화되었습니다.");
     }
 }
