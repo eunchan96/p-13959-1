@@ -6,10 +6,19 @@
     </head>
     <body>
         <h1>질문 목록</h1>
-        <ul>
-            <li th:each="q : ${questionList}">
-                [[${q.id}]] : [[${q.subject}]]
-            </li>
-        </ul>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>작성일시</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="q : ${questionList}">
+                    <td th:text="${q.subject}"></td>
+                    <td th:text="${q.createDate}"></td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>
