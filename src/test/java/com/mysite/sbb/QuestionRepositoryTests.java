@@ -97,12 +97,17 @@ class QuestionRepositoryTests {
 	}
 
 	@Test
-	@DisplayName("답변 저장 ver.2")
+	@DisplayName("답변 저장 ver.2") // OneToMany 사용
 	void t9() {
 		Question question = questionRepository.findById(2).get();
 
-		question.addAnswer("네, 자동으로 생성됩니다.");
+		int beforeCount = question.getAnswers().size();
 
-		assertThat(question.getAnswers().size()).isEqualTo(1);
+		Answer newAnswer = question.addAnswer("네, 자동으로 생성됩니다.");
+
+		int afterCount = question.getAnswers().size();
+
+		assertThat(newAnswer.getId()).isEqualTo(0); // INSERT가 트랜잭션 이후에 발생하므로 ID는 0으로 시작
+		assertThat(afterCount).isEqualTo(beforeCount + 1);
 	}
 }
