@@ -1,14 +1,17 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container">
     <h5 class="my-3 border-bottom pb-2">질문 등록</h5>
-    <form th:action="@{/question/create}" method="post">
+    <form th:action="@{/question/create}" th:object="${questionForm}" method="post">
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+            <div th:each="error : ${#fields.allErrors()}" th:text="${error}"></div>
+        </div>
         <div class="mb-3">
             <label for="subject" class="form-label">제목</label>
-            <input type="text" id="subject" name="subject" class="form-control" placeholder="제목을 입력하세요">
+            <input type="text" th:field="*{subject}" class="form-control" placeholder="제목을 입력하세요">
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
-            <textarea id="content" name="content" rows="10" class="form-control" placeholder="내용을 입력하세요"></textarea>
+            <textarea th:field="*{content}" rows="10" class="form-control" placeholder="내용을 입력하세요"></textarea>
         </div>
         <input type="submit" value="저장하기" class="btn btn-primary my-2">
     </form>
